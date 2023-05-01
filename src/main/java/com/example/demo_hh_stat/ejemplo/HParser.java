@@ -12,6 +12,10 @@ public class HParser {
     URL obj = null;
     private List<Vacancy> vacancyList = new VacancyList().vacancies;
 
+    public List<Vacancy> getVacancyList() {
+        return vacancyList;
+    }
+
     public List getVacancies(String title, int cityId, int pageNumber) {
         //TODO как сделать, чтоб возвращал ВСЕ найденные по фильтрам вакансии, а не только 10 или 20,
         // и еще, чтобы работал с разными словами в заголовке вакансии, в том числе с написанными на русском

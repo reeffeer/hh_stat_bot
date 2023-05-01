@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GeneralLogic {
+
     HParser hParser = new HParser();
     Filter filter = new Filter("Java", 1, 10);
-    List list = new ArrayList<>(hParser.getVacancies(filter.getTitle(), filter.getCityId(), filter.getPageNumber()));
-
+    List<Vacancy> list = hParser.getVacancyList();
     public int getNumberOfVacancies() {
 //        int numberOfVacancies = hParser.getVacancies("Java", 1/*, 11*/
 //                /*filter.getTitle(), filter.getCityId(), filter.getPageNumber()*/)
@@ -17,8 +17,10 @@ public class GeneralLogic {
     }
 
     public int getNumberOfAllResponses() {
-        int numberOfAllResponses = 0; //TODO
-        hParser.getVacancies(filter.getTitle(), filter.getCityId(), filter.pageNumber);
+        int numberOfAllResponses = 0;
+        for (Vacancy v : list) {
+            numberOfAllResponses += v.getResponses();
+        }
         return numberOfAllResponses;
     }
 
