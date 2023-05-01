@@ -6,21 +6,19 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 public class HParser {
+
     URL obj = null;
-    private List<Vacancy> vacancyList = new VacancyList().vacancies;
+    private List<Vacancy> vacancyList = new ArrayList<>();
 
-    public List<Vacancy> getVacancyList() {
-        return vacancyList;
-    }
-
-    public List getVacancies(String title, int cityId, int pageNumber) {
+    public List<Vacancy> getVacancies(Filter filter) {
         //TODO как сделать, чтоб возвращал ВСЕ найденные по фильтрам вакансии, а не только 10 или 20,
         // и еще, чтобы работал с разными словами в заголовке вакансии, в том числе с написанными на русском
-        String url = "https://api.hh.ru/vacancies?text=" + title + "&area=" + cityId +
-                "&per_page=" + pageNumber + "&page=199";
+        String url = "https://api.hh.ru/vacancies?text=" + filter.getTitle() + "&area=" + filter.getCityId() +
+                "&per_page=" + filter.getPageNumber() + "&page=199";
         StringBuilder response = null;
         try {
             obj = new URL(url);

@@ -1,17 +1,17 @@
 package com.example.demo_hh_stat.ejemplo;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GeneralLogic {
-
+    Filter filter;
     HParser hParser = new HParser();
-    Filter filter = new Filter("Java", 1, 10);
-    List<Vacancy> list = hParser.getVacancyList();
+    List<Vacancy> list = hParser.getVacancies(filter);
+
+    public GeneralLogic(Filter filter) {
+        this.filter = filter;
+    }
+
     public int getNumberOfVacancies() {
-//        int numberOfVacancies = hParser.getVacancies("Java", 1/*, 11*/
-//                /*filter.getTitle(), filter.getCityId(), filter.getPageNumber()*/)
-//                .size(); //вместо конкретных данных мы получаем значения фильтров из класса Filter,
         int numberOfVacancies = list.size();
         return numberOfVacancies;
     }
