@@ -3,17 +3,18 @@ package com.example.demo_hh_stat.ejemplo;
 import java.util.List;
 
 public class GeneralLogic {
-    Filter filter;
+    Filter filter = new Filter("Java", 1, 10);
     HParser hParser = new HParser();
     List<Vacancy> list = hParser.getVacancies(filter);
 
-    public GeneralLogic(Filter filter) {
+    /*public GeneralLogic(Filter filter) {
         this.filter = filter;
+    }*/
+    public GeneralLogic() {
     }
 
     public int getNumberOfVacancies() {
-        int numberOfVacancies = list.size();
-        return numberOfVacancies;
+        return list.size();
     }
 
     public int getNumberOfAllResponses() {
@@ -25,8 +26,7 @@ public class GeneralLogic {
     }
 
     public int getAvgResponsesNumberPerVacancy() {
-        int avgResponsesPerVacancy = getNumberOfAllResponses() / getNumberOfVacancies();
-        return avgResponsesPerVacancy;
+        return getNumberOfAllResponses() / getNumberOfVacancies();
     }
 
     public void printNumberOfVacancies() {

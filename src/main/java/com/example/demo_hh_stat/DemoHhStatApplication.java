@@ -13,9 +13,11 @@ import java.util.List;
 public class DemoHhStatApplication {
 
     public static void main(String[] args) {
-        //print();
-        GeneralLogic logic = new GeneralLogic(new Filter("Java", 1, 10));
+        print();
+        //GeneralLogic logic = new GeneralLogic(new Filter("Java", 1, 10));
+        GeneralLogic logic = new GeneralLogic();
         logic.printNumberOfVacancies();
+
     }
 
     //просто для проверки работы класса HParser
