@@ -53,8 +53,7 @@ public class Filter {
         }
 
         public Filter build() {
-            Filter filter = new Filter(this);
-            return filter;
+            return new Filter(this);
         }
 
     }
