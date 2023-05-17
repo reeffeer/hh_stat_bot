@@ -22,8 +22,10 @@ public class HhApi {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
-    public List<Vacancy> getVacanciesFilterNameRegion(String nameVacancy, String nameRegion){
-        HttpRequest httpRequest = HttpRequest.newBuilder().uri(URI.create("https://api.hh.ru/vacancies?" + "text=" + nameVacancy + "&area=" + getIdRegion(nameRegion))).build();
+    public List<Vacancy> getVacanciesFilterNameRegion(Filter filter){
+        HttpRequest httpRequest = HttpRequest.newBuilder().uri(URI.create(
+                "https://api.hh.ru/vacancies?" + "text=" + filter.getTitle()
+                        + "&area=" + getIdRegion(filter.getRegion()))).build();
         try {
             HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
             String body = response.body();
