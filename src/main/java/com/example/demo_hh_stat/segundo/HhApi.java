@@ -1,8 +1,5 @@
 package com.example.demo_hh_stat.segundo;
 
-import com.example.demo_hh_stat.ejemplo.Filter;
-import com.example.demo_hh_stat.ejemplo.ListVacancies;
-import com.example.demo_hh_stat.ejemplo.Vacancy;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;

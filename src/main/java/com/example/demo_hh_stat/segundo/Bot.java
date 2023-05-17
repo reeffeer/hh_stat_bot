@@ -8,11 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
-
 @Component
 public class Bot {
 
-   private Logic logic;
+    private Logic logic;
 
     @Autowired
     public Bot(Logic logic){
@@ -20,7 +19,7 @@ public class Bot {
         TelegramBot bot = new TelegramBot("5969411582:AAFB5FwPZp-SCKP7owsqb8eU335xjcr94TM");
         bot.setUpdatesListener(element -> {
             System.out.println(element);
-            element.forEach(it->{
+            element.forEach(it -> {
                 String massive[] = it.message().text().split(" ");
                 if (massive[0].equals("/start") || massive.length < 2){
                     bot.execute(new SendMessage(it.message().chat().id(), "Привет! Я покажу тебе количество откликов на интересующую тебя позицию " +
@@ -48,7 +47,6 @@ public class Bot {
             return UpdatesListener.CONFIRMED_UPDATES_ALL;
         });
     }
-
 
     public String overRide(String s[]){
         String reg = s[1];
