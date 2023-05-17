@@ -13,9 +13,9 @@ public class Logic {
     public Logic(HhApi hhApi) {
         this.hhApi = hhApi;
     }
-    public int getNumberOfVacancies(String title, String region) {
+    public int getNumberOfVacancies(Filter filter) {
         //Filter filter = new FilterBuilder().setTitle(title).setNameRegion(region).build();
-        List<Vacancy> vacancies = hhApi.getVacanciesFilterNameRegion(title, region);
+        List<Vacancy> vacancies = hhApi.getVacanciesFilterNameRegion(filter);
         return vacancies.size();
     }
 }
