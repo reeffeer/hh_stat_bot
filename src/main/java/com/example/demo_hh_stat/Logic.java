@@ -1,6 +1,7 @@
-package com.example.demo_hh_stat.segundo;
+package com.example.demo_hh_stat;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo_hh_stat.entity.Filter;
+import com.example.demo_hh_stat.entity.Vacancy;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -9,7 +10,6 @@ import java.util.List;
 public class Logic {
     private HhApi hhApi;
 
-    @Autowired
     public Logic(HhApi hhApi) {
         this.hhApi = hhApi;
     }

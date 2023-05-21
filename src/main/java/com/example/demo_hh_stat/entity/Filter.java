@@ -1,4 +1,4 @@
-package com.example.demo_hh_stat.segundo;
+package com.example.demo_hh_stat.entity;
 
 import lombok.Getter;
 
