@@ -7,6 +7,8 @@ import com.example.demo_hh_stat.entity.Vacancy;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.client.ExchangeStrategies;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.IOException;
 import java.net.URI;
@@ -17,38 +19,65 @@ import java.util.List;
 
 @Component
 public class HhApi {
-    private HttpClient httpClient;
     private ObjectMapper objectMapper;
+    private WebClient webClient;
+    final int size = 16 * 1024 * 1024;
 
     public HhApi(){
-        httpClient = HttpClient.newHttpClient();
         objectMapper = new ObjectMapper();
+        webClient = WebClient.builder().baseUrl("https://api.hh.ru")
+                .exchangeStrategies(ExchangeStrategies.builder()
+                        .codecs(codecs -> codecs.defaultCodecs().maxInMemorySize(size))
+                        .build()).build();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
-    public List<Vacancy> getVacanciesFilterNameRegion(Filter filter){
-        HttpRequest httpRequest = HttpRequest.newBuilder().uri(URI.create(
-                "https://api.hh.ru/vacancies?" + "text=" + filter.getTitle()
-                        + "&area=" + getIdRegion(filter.getRegion()))).build();
+    public List<Vacancy> getVacanciesFilterNameRegion(String nameVacancy, String nameRegion){
+        WebClient.ResponseSpec responseSpec = webClient.get()
+                .uri("/vacancies?" + "text=" + nameVacancy + "&area=" + getIdRegion(nameRegion) + "&responses_count_enabled=true")
+                .retrieve();
+        return getVacancies(responseSpec);
+    }
+
+    private List<Vacancy> getVacancies(WebClient.ResponseSpec responseSpec) {
+        String body = responseSpec.bodyToMono(String.class).block();
+        System.out.println(body);
         try {
-            HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-            String body = response.body();
-            System.out.println(body);
             ListVacancies lV = objectMapper.readValue(body,ListVacancies.class);
             return lV.getItems();
         } catch (IOException e) {
             throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
         }
     }
 
+    public List<Vacancy> getVacanciesFilterNameRegionExperience(String nameVacancy, String nameRegion, String idExperience){
+        WebClient.ResponseSpec responseSpecNre = webClient.get()
+                .uri("/vacancies?" + "text=" + nameVacancy + "&area=" + getIdRegion(nameRegion) + "&experience=" + idExperience  + "&responses_count_enabled=true")
+                .retrieve();
+        return getVacancies(responseSpecNre);
+    }
+
+    public List<Vacancy> getVacanciesFilterNameRegionSalary(String nameVacancy, String nameRegion, String salary){
+        WebClient.ResponseSpec responseSpecNrs = webClient.get()
+                .uri("/vacancies?" + "text=" + nameVacancy + "&area=" + getIdRegion(nameRegion) + "&salary=" + salary  + "&responses_count_enabled=true")
+                .retrieve();
+        return getVacancies(responseSpecNrs);
+    }
+
+    public List<Vacancy> getVacanciesFilterNameRegionExperienceSalary(String nameVacancy, String nameRegion, String idExperience, String salary){
+        WebClient.ResponseSpec responseSpecNres = webClient.get()
+                .uri("/vacancies?" + "text=" + nameVacancy + "&area=" + getIdRegion(nameRegion) + "&experience=" + idExperience + "&salary=" + salary   + "&responses_count_enabled=true")
+                .retrieve();
+        return getVacancies(responseSpecNres);
+    }
     public String getIdRegion(String nameRegion){
-        HttpRequest httpRequestArea = HttpRequest.newBuilder().uri(URI.create("https://api.hh.ru/areas/113")).build();
         String idAreas = null;
+        WebClient.ResponseSpec responseSpecArea = webClient.get()
+                .uri("/areas/113")
+                .retrieve();
+        String bodyArea = responseSpecArea.bodyToMono(String.class).block();
+        System.out.println(bodyArea);
         try {
-            HttpResponse<String> responseArea = httpClient.send(httpRequestArea, HttpResponse.BodyHandlers.ofString());
-            String bodyArea = responseArea.body();
             Country cT = objectMapper.readValue(bodyArea, Country.class);
             System.out.println(nameRegion);
             for (int i = 0; i < cT.getAreas().size(); i++){
@@ -71,11 +100,9 @@ public class HhApi {
             if (idAreas == null){
                 idAreas = "2";
             }
-            return idAreas;
         } catch (IOException e) {
             throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
         }
+        return idAreas;
     }
 }
