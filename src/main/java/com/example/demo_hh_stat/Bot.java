@@ -14,7 +14,7 @@ public class Bot {
 Filter filter;
     private Logic logic;
 
-    public Bot(Logic logic){
+    public Bot(Logic logic) {
         this.logic = logic;
         TelegramBot bot = new TelegramBot("5969411582:AAFB5FwPZp-SCKP7owsqb8eU335xjcr94TM");
         bot.setUpdatesListener(element -> {
@@ -33,8 +33,9 @@ Filter filter;
                     String requestId = String.valueOf(it.message().messageId()).concat(String.valueOf(it.message().from().id()));
                     filter = new Filter.FilterBuilder(massive[0], massive[1], requestId).build();
                     int numVacancies = logic.getNumberOfVacancies(filter);
+                    int allResponses = logic.getNumberOfResponses(filter);
                     bot.execute(new SendMessage(it.message().chat().id(),
-                            "Найдено вакансий " + numVacancies));
+                            "Найдено вакансий " + numVacancies + " и всего откликов: " + allResponses));
                 }
             });
             return UpdatesListener.CONFIRMED_UPDATES_ALL;
