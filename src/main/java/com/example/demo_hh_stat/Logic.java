@@ -17,7 +17,7 @@ public class Logic {
         List<Vacancy> vacancies = hhApi.getVacanciesFilterNameRegion(filter.getTitle(), filter.getRegion());
         return vacancies.size();
     }
-    public int getNumberOfResponses(Filter filter) {
+    public int getAllResponses(Filter filter) {
         List<Vacancy> vacancies = hhApi.getVacanciesFilterNameRegion(filter.getTitle(), filter.getRegion());
         int totalResponses = 0;
         for (Vacancy v : vacancies) {
