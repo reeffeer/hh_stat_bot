@@ -29,12 +29,6 @@
             <artifactId>lombok</artifactId>
         </dependency>
     </dependencies>
-    <repositories>
-        <repository>
-            <id>openai-repo</id>
-            <url>https://repo.openai.com/nexus/repository/maven-releases/</url>
-        </repository>
-    </repositories>
     <build>
         <plugins>
             <plugin>
