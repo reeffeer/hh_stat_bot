@@ -15,7 +15,7 @@ public class Logic {
     }
     public int getNumberOfVacancies(Filter filter) {
         //Filter filter = new FilterBuilder().setTitle(title).setNameRegion(region).build();
-        List<Vacancy> vacancies = hhApi.getVacanciesFilterNameRegion(filter);
+        List<Vacancy> vacancies = hhApi.getVacanciesFilterNameRegion(filter.getTitle(),filter.getRegion());
         return vacancies.size();
     }
 }

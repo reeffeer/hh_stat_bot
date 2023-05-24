@@ -12,6 +12,7 @@ public class Vacancy {
     private String id;
     private String name;
     private Counters counters;
+
 //    private int responses;
 
 //    @Override

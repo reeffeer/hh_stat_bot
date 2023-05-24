@@ -23,6 +23,7 @@ public class HhApi {
     private WebClient webClient;
     final int size = 16 * 1024 * 1024;
 
+
     public HhApi(){
         objectMapper = new ObjectMapper();
         webClient = WebClient.builder().baseUrl("https://api.hh.ru")
