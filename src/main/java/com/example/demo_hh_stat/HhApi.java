@@ -36,6 +36,10 @@ public class HhApi {
         WebClient.ResponseSpec responseSpec = webClient.get()
                 .uri("/vacancies?" + "text=" + nameVacancy + "&area=" + getIdRegion(nameRegion) + "&responses_count_enabled=true")
                 .retrieve();
+        return getVacancies(responseSpec);
+    }
+
+    private List<Vacancy> getVacancies(WebClient.ResponseSpec responseSpec) {
         String body = responseSpec.bodyToMono(String.class).block();
         System.out.println(body);
         try {
@@ -50,42 +54,21 @@ public class HhApi {
         WebClient.ResponseSpec responseSpecNre = webClient.get()
                 .uri("/vacancies?" + "text=" + nameVacancy + "&area=" + getIdRegion(nameRegion) + "&experience=" + idExperience  + "&responses_count_enabled=true")
                 .retrieve();
-        String bodyNre = responseSpecNre.bodyToMono(String.class).block();
-        System.out.println(bodyNre);
-        try {
-            ListVacancies lV = objectMapper.readValue(bodyNre,ListVacancies.class);
-            return lV.getItems();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return getVacancies(responseSpecNre);
     }
 
     public List<Vacancy> getVacanciesFilterNameRegionSalary(String nameVacancy, String nameRegion, String salary){
         WebClient.ResponseSpec responseSpecNrs = webClient.get()
                 .uri("/vacancies?" + "text=" + nameVacancy + "&area=" + getIdRegion(nameRegion) + "&salary=" + salary  + "&responses_count_enabled=true")
                 .retrieve();
-        String bodyNrs = responseSpecNrs.bodyToMono(String.class).block();
-        System.out.println(bodyNrs);
-        try {
-            ListVacancies lV = objectMapper.readValue(bodyNrs,ListVacancies.class);
-            return lV.getItems();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return getVacancies(responseSpecNrs);
     }
 
     public List<Vacancy> getVacanciesFilterNameRegionExperienceSalary(String nameVacancy, String nameRegion, String idExperience, String salary){
         WebClient.ResponseSpec responseSpecNres = webClient.get()
                 .uri("/vacancies?" + "text=" + nameVacancy + "&area=" + getIdRegion(nameRegion) + "&experience=" + idExperience + "&salary=" + salary   + "&responses_count_enabled=true")
                 .retrieve();
-        String bodyNres = responseSpecNres.bodyToMono(String.class).block();
-        System.out.println(bodyNres);
-        try {
-            ListVacancies lV = objectMapper.readValue(bodyNres,ListVacancies.class);
-            return lV.getItems();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return getVacancies(responseSpecNres);
     }
     public String getIdRegion(String nameRegion){
         String idAreas = null;
