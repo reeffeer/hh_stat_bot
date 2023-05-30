@@ -1,10 +1,10 @@
-package com.example.tgbotspringboot;
+package com.example.demo_hh_stat;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class TgbotSpringBootApplicationTests {
+class DemoHhStatApplicationTests {
 
     @Test
     void contextLoads() {
