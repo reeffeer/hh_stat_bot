@@ -1,36 +1,21 @@
 package com.example.demo_hh_stat;
 
 import com.example.demo_hh_stat.entity.Country;
-import com.example.demo_hh_stat.entity.Filter;
 import com.example.demo_hh_stat.entity.ListVacancies;
 import com.example.demo_hh_stat.entity.Vacancy;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class HhApi {
-    private ObjectMapper objectMapper;
-    private WebClient webClient;
-    final int size = 16 * 1024 * 1024;
-
-    public HhApi(){
-        objectMapper = new ObjectMapper();
-        webClient = WebClient.builder().baseUrl("https://api.hh.ru")
-                .exchangeStrategies(ExchangeStrategies.builder()
-                        .codecs(codecs -> codecs.defaultCodecs().maxInMemorySize(size))
-                        .build()).build();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    }
+    private final ObjectMapper objectMapper;
+    private final WebClient webClient;
 
     public List<Vacancy> getVacanciesFilterNameRegion(String nameVacancy, String nameRegion){
         WebClient.ResponseSpec responseSpec = webClient.get()
