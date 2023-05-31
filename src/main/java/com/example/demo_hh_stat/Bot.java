@@ -1,20 +1,20 @@
 package com.example.demo_hh_stat;
 
 
-import com.example.demo_hh_stat.entity.Filter;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 
 @Component
 public class Bot {
-    Filter filter;
-    private Logic logic;
-    String botToken = "5969411582:AAFB5FwPZp-SCKP7owsqb8eU335xjcr94TM";
+    private Filter filter;
+    private final Logic logic;
+    @Value("${botToken}")
+    private String botToken;
+
     public Bot(Logic logic) {
         this.logic = logic;
 
@@ -33,7 +33,11 @@ public class Bot {
                         massive[1] = overRide(massive);
                     }
                     String requestId = String.valueOf(it.message().messageId()).concat(String.valueOf(it.message().from().id()));
-                    filter = new Filter.FilterBuilder(massive[0], massive[1], requestId).build();
+                    filter = new Filter.FilterBuilder()
+                            .title(massive[0])
+                            .region(massive[1])
+                            .requestId(requestId)
+                            .build();
                     int numVacancies = logic.getNumberOfVacancies(filter);
                     int allResponses = logic.getAllResponses(filter);
                     bot.execute(new SendMessage(it.message().chat().id(),
