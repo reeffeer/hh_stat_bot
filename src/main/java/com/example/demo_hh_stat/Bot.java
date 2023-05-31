@@ -14,6 +14,7 @@ public class Bot {
     private final Logic logic;
     @Value("${botToken}")
     private String botToken;
+
     public Bot(Logic logic) {
         this.logic = logic;
 

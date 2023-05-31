@@ -10,6 +10,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class Logic {
     private final HhApi hhApi;
+
     public int getNumberOfVacancies(Filter filter) {
         List<Vacancy> vacancies = hhApi.getVacanciesFilterNameRegion(filter.getTitle(), filter.getRegion());
         return vacancies.size();
