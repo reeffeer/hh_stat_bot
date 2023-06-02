@@ -6,5 +6,6 @@ public enum ConversationState {
     SET_VACATION_NAME,
     SET_AREA_NAME,
     SET_EXPERIENCE,
+    SET_SALARY,
     SHOW_VACATIONS
 }
