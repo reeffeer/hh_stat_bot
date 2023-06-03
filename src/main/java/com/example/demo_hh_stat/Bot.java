@@ -12,8 +12,9 @@ import org.springframework.stereotype.Component;
 public class Bot {
     private Filter filter;
     private final Logic logic;
-    @Value("${botToken}")
-    private String botToken;
+
+    //TODO убрать токен в config и вытягивать его в классе-конфигураторе
+    private String botToken = "5969411582:AAFB5FwPZp-SCKP7owsqb8eU335xjcr94TM";
 
     public Bot(Logic logic) {
         this.logic = logic;
