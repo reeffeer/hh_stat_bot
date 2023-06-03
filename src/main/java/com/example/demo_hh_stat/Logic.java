@@ -1,5 +1,6 @@
 package com.example.demo_hh_stat;
 
+import com.example.demo_hh_stat.entity.Filter;
 import com.example.demo_hh_stat.entity.Vacancy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
