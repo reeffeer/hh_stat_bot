@@ -14,7 +14,7 @@ public class Bot {
     private final Logic logic;
 
     //TODO убрать токен в config и вытягивать его в классе-конфигураторе
-    private String botToken = "5969411582:AAFB5FwPZp-SCKP7owsqb8eU335xjcr94TM";
+    private String botToken = "";
 
     public Bot(Logic logic) {
         this.logic = logic;
