@@ -1,10 +1,10 @@
 package com.example.demo_hh_stat;
 
 
+import com.example.demo_hh_stat.entity.Filter;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.request.SendMessage;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 
