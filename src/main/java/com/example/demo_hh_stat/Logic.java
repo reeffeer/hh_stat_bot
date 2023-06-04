@@ -12,19 +12,6 @@ import java.util.List;
 public class Logic {
     private final HhApi hhApi;
 
-    public int getNumberOfVacancies(Filter filter) {
-        List<Vacancy> vacancies = hhApi.getVacanciesFilterNameRegion(filter.getTitle(), filter.getRegion());
-        return vacancies.size();
-    }
-    public int getAllResponses(Filter filter) {
-        List<Vacancy> vacancies = hhApi.getVacanciesFilterNameRegion(filter.getTitle(), filter.getRegion());
-        int totalResponses = 0;
-        for (Vacancy v : vacancies) {
-            totalResponses += v.getCounters().getResponses();
-        }
-        return totalResponses;
-    }
-
     public List<Vacancy> getVacancyFilter(Filter filter){
         Field field[] = filter.getClass().getDeclaredFields();
         field[2].setAccessible(true);
