@@ -15,8 +15,6 @@ import java.util.List;
 public class Bot {
     private Filter filter;
     private final Logic logic;
-
-    //TODO убрать токен в config и вытягивать его в классе-конфигураторе
     private String botToken;
 
     public Bot(Logic logic, @Value("${bot.token}") String botToken) {
