@@ -45,6 +45,7 @@ public class Bot {
                     List<Vacancy> list = logic.getVacancyFilter(filter);
                     int allResponses = getAllResponses(list);
                     if (list.size() != 0){
+
                         //show all vacancies
                         /*list.forEach(vacancy -> {
                             bot.execute(new SendMessage(it.message().chat().id(), "Вакансия: " + vacancy.getName() + "\nКоличество откликов: " + vacancy.getCounters().getResponses() + "\nСсылка: http://hh.ru/vacancy/" + vacancy.getId()));
