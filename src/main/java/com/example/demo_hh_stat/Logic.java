@@ -34,18 +34,9 @@ public class Logic {
         }
     }
 
-    public int getNumberOfVacancies(Filter filter) {
-        List<Vacancy> vacancies = hhApi.getVacanciesFilterNameRegion(filter.getTitle(), filter.getRegion());
-        return vacancies.size();
-    }
-
-    public int getAllResponses(Filter filter) {
-        List<Vacancy> vacancies = hhApi.getVacanciesFilterNameRegion(filter.getTitle(), filter.getRegion());
-        int totalResponses = 0;
-        for (Vacancy v : vacancies) {
-            totalResponses += v.getCounters().getResponses();
-        }
-        return totalResponses;
+    public int getNumberOfVacancies(List<Vacancy> list) {
+        list = getVacancyFilter(Filter.builder().build());
+        return list.size();
     }
 
     public int getAllResponses(List<Vacancy> list) {
