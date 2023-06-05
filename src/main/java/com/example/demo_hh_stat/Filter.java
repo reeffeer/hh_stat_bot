@@ -1,8 +1,11 @@
-package com.example.demo_hh_stat.entity;
+package com.example.demo_hh_stat;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.ToString;
 
-@Data
+@Getter
 @Builder()
 @AllArgsConstructor
 @ToString
