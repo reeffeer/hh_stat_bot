@@ -47,5 +47,13 @@ public class Logic {
         }
         return totalResponses;
     }
+
+    public int getAllResponses(List<Vacancy> list) {
+        int totalResponses = 0;
+        for (Vacancy v : list) {
+            totalResponses += v.getCounters().getResponses();
+        }
+        return totalResponses;
+    }
 }
 
