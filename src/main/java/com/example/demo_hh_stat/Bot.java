@@ -15,12 +15,11 @@ import java.util.List;
 public class Bot {
     private Filter filter;
     private final Logic logic;
+    private String botToken;
 
-    //TODO убрать токен в config и вытягивать его в классе-конфигураторе
-    private String botToken = "5969411582:AAFB5FwPZp-SCKP7owsqb8eU335xjcr94TM";
-
-    public Bot(Logic logic) {
+    public Bot(Logic logic, @Value("${bot.token}") String botToken) {
         this.logic = logic;
+        this.botToken = botToken;
 
         TelegramBot bot = new TelegramBot(botToken);
         bot.setUpdatesListener(element -> {
@@ -46,13 +45,15 @@ public class Bot {
                     List<Vacancy> list = logic.getVacancyFilter(filter);
                     int allResponses = getAllResponses(list);
                     if (list.size() != 0){
-                        list.forEach(vacancy -> {
+
+                        //show all vacancies
+                        /*list.forEach(vacancy -> {
                             bot.execute(new SendMessage(it.message().chat().id(), "Вакансия: " + vacancy.getName() + "\nКоличество откликов: " + vacancy.getCounters().getResponses() + "\nСсылка: http://hh.ru/vacancy/" + vacancy.getId()));
                             System.out.println(vacancy.getId() + " " + vacancy.getName());
-                        });
-                        bot.execute(new SendMessage(it.message().chat().id(), "Количество найденых вакансий: " + list.size() + " и всего откликов " + allResponses));
+                        });*/
+                        bot.execute(new SendMessage(it.message().chat().id(), "Количество найденных вакансий: " + list.size() + " и всего откликов " + allResponses + "."));
                     } else {
-                        bot.execute(new SendMessage(it.message().chat().id(), "По вашему запросу вакансий не найдено"));
+                        bot.execute(new SendMessage(it.message().chat().id(), "По вашему запросу вакансий не найдено."));
                     }
                 }
             });

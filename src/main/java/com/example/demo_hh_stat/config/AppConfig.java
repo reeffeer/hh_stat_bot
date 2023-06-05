@@ -9,7 +9,6 @@ import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
-@PropertySource("classpath:application.properties")
 public class AppConfig {
 
     final int size = 16 * 1024 * 1024;
