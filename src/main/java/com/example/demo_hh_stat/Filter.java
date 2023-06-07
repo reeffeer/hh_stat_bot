@@ -1,11 +1,10 @@
 package com.example.demo_hh_stat;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
+@Setter
+@NoArgsConstructor
 @Builder()
 @AllArgsConstructor
 @ToString
@@ -13,6 +12,6 @@ public class Filter {
     private String title;
     private String region;
     private String experience;
-    private int salary;
+    private Integer salary;
     private String requestId;
 }
