@@ -36,11 +36,11 @@
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.telegram/telegrambots -->
-        <!--<dependency>
+        <dependency>
             <groupId>org.telegram</groupId>
             <artifactId>telegrambots</artifactId>
             <version>6.5.0</version>
-        </dependency>-->
+        </dependency>
 
 
         <!-- https://mvnrepository.com/artifact/com.github.pengrad/java-telegram-bot-api -->
