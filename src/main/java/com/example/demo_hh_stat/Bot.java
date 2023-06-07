@@ -29,7 +29,6 @@ public class Bot {
     public Bot(Logic logic, @Value("${bot.token}") String botToken) {
         this.logic = logic;
         this.botToken = botToken;
-        //start(logic, botToken);
         start();
     }
 
