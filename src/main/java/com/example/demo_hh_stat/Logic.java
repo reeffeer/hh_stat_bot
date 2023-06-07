@@ -19,13 +19,13 @@ public class Logic {
                 return hhApi.getVacanciesFilterNameRegion(filter.getTitle(),filter.getRegion());
             }
             if (field[2].get(filter) != null && field[3].get(filter) == null) {
-                return hhApi.getVacanciesFilterNameRegionExperience(filter.getTitle(),filter.getRegion(),filter.getExperience());
+                return hhApi.getVacanciesFilterNameRegionExperience(filter.getTitle(),filter.getRegion(),overRideExperience(filter.getExperience()));
             }
             if (field[2].get(filter) == null && field[3].get(filter) != null){
                 return hhApi.getVacanciesFilterNameRegionSalary(filter.getTitle(),filter.getRegion(),String.valueOf(filter.getSalary()));
             }
             if (field[2].get(filter) != null && field[3].get(filter) != null){
-                return hhApi.getVacanciesFilterNameRegionExperienceSalary(filter.getTitle(), filter.getRegion(), filter.getExperience(), String.valueOf(filter.getSalary()));
+                return hhApi.getVacanciesFilterNameRegionExperienceSalary(filter.getTitle(), filter.getRegion(), overRideExperience(filter.getExperience()), String.valueOf(filter.getSalary()));
             }
             return null;
         } catch (IllegalAccessException e) {
@@ -44,6 +44,31 @@ public class Logic {
             totalResponses += v.getCounters().getResponses();
         }
         return totalResponses;
+    }
+
+    public String overRideExperience(String nameExperience){
+        String massive[] = {"noExperience","between1And3","between3And6","moreThan6"};
+        String massiveNameExperience[] = nameExperience.split(" ");
+        char s[] = massiveNameExperience[0].toCharArray();
+        for (int i = 0; i < s.length; i++){
+            if (s[i] == ','){
+                s[i] = '.';
+            }
+        }
+        massiveNameExperience[0] = String.valueOf(s);
+        if (Double.parseDouble(massiveNameExperience[0]) < 1){
+            return massive[0];
+        }
+        if (Double.parseDouble(massiveNameExperience[0]) >= 1 && Double.parseDouble(massiveNameExperience[0]) < 3){
+            return massive[1];
+        }
+        if (Double.parseDouble(massiveNameExperience[0]) >= 3 && Double.parseDouble(massiveNameExperience[0]) <= 6){
+            return massive[2];
+        }
+        if (Double.parseDouble(massiveNameExperience[0]) > 6){
+            return massive[3];
+        }
+        return null;
     }
 }
 
