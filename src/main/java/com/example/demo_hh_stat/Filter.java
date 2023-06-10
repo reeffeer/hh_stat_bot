@@ -1,6 +1,9 @@
 package com.example.demo_hh_stat;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.ToString;
 
 @Getter
 @Builder()

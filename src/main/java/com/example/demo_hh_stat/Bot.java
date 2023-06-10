@@ -1,23 +1,29 @@
 package com.example.demo_hh_stat;
 
 
+import com.example.demo_hh_stat.entity.Vacancy;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 
 @Component
 public class Bot {
     private Filter filter;
     private final Logic logic;
-    @Value("${botToken}")
     private String botToken;
 
-    public Bot(Logic logic) {
+    public Bot(Logic logic, @Value("${bot.token}") String botToken) {
         this.logic = logic;
+        this.botToken = botToken;
+        start(logic, botToken);
+    }
 
+    private void start(Logic logic, String botToken) {
         TelegramBot bot = new TelegramBot(botToken);
         bot.setUpdatesListener(element -> {
             System.out.println(element);
@@ -38,10 +44,22 @@ public class Bot {
                             .region(massive[1])
                             .requestId(requestId)
                             .build();
-                    int numVacancies = logic.getNumberOfVacancies(filter);
-                    int allResponses = logic.getAllResponses(filter);
-                    bot.execute(new SendMessage(it.message().chat().id(),
-                            "Найдено вакансий " + numVacancies + " и всего откликов: " + allResponses));
+
+                    List<Vacancy> vacancies = logic.getVacancyFilter(filter);
+                    int numVacancies = vacancies.size();
+                    int allResponses = logic.getAllResponses(vacancies);
+
+                    if (vacancies.size() != 0){
+
+                        //show all vacancies
+                        /*list.forEach(vacancy -> {
+                            bot.execute(new SendMessage(it.message().chat().id(), "Вакансия: " + vacancy.getName() + "\nКоличество откликов: " + vacancy.getCounters().getResponses() + "\nСсылка: http://hh.ru/vacancy/" + vacancy.getId()));
+                            System.out.println(vacancy.getId() + " " + vacancy.getName());
+                        });*/
+                        bot.execute(new SendMessage(it.message().chat().id(), "Количество найденных вакансий: " + vacancies.size() + " и всего откликов " + allResponses + "."));
+                    } else {
+                        bot.execute(new SendMessage(it.message().chat().id(), "По вашему запросу вакансий не найдено."));
+                    }
                 }
             });
             return UpdatesListener.CONFIRMED_UPDATES_ALL;

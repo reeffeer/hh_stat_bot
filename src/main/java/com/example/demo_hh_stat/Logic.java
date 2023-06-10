@@ -3,7 +3,6 @@ package com.example.demo_hh_stat;
 import com.example.demo_hh_stat.entity.Vacancy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
 import java.lang.reflect.Field;
 import java.util.List;
 
@@ -11,19 +10,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class Logic {
     private final HhApi hhApi;
-
-    public int getNumberOfVacancies(Filter filter) {
-        List<Vacancy> vacancies = hhApi.getVacanciesFilterNameRegion(filter.getTitle(), filter.getRegion());
-        return vacancies.size();
-    }
-    public int getAllResponses(Filter filter) {
-        List<Vacancy> vacancies = hhApi.getVacanciesFilterNameRegion(filter.getTitle(), filter.getRegion());
-        int totalResponses = 0;
-        for (Vacancy v : vacancies) {
-            totalResponses += v.getCounters().getResponses();
-        }
-        return totalResponses;
-    }
 
     public List<Vacancy> getVacancyFilter(Filter filter){
         Field field[] = filter.getClass().getDeclaredFields();
@@ -47,4 +33,18 @@ public class Logic {
             throw new RuntimeException(e);
         }
     }
+
+    public int getNumberOfVacancies(List<Vacancy> list) {
+        list = getVacancyFilter(Filter.builder().build());
+        return list.size();
+    }
+
+    public int getAllResponses(List<Vacancy> list) {
+        int totalResponses = 0;
+        for (Vacancy v : list) {
+            totalResponses += v.getCounters().getResponses();
+        }
+        return totalResponses;
+    }
 }
+
