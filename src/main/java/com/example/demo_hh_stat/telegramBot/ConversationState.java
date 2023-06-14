@@ -1,4 +1,4 @@
-package telegramBot;
+package com.example.demo_hh_stat.telegramBot;
 
 public enum ConversationState {
     CONVERSATION_STARTED,

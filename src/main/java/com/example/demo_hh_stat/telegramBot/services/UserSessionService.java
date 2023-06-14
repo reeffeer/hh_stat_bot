@@ -1,6 +1,6 @@
-package telegramBot.services;
+package com.example.demo_hh_stat.telegramBot.services;
 
-import telegramBot.UserSession;
+import com.example.demo_hh_stat.telegramBot.UserSession;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,14 +1,14 @@
-package telegramBot;
+package com.example.demo_hh_stat.telegramBot;
 
 import lombok.Data;
 
 @Data
 public class UserSession {
     private Long chatId;
-    private String vacation;
-    private String city;
+    private String title;
+    private String region;
     private String experience;
-    private int salary;
+    private Integer salary;
     private ConversationState state;
 
     public UserSession() {

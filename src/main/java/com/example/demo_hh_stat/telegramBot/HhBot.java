@@ -1,21 +1,29 @@
-package telegramBot;
+package com.example.demo_hh_stat.telegramBot;
 
+import com.example.demo_hh_stat.Logic;
+import com.example.demo_hh_stat.entity.Vacancy;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import telegramBot.services.UserSessionService;
+import com.example.demo_hh_stat.telegramBot.services.UserSessionService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+@Component
+@RequiredArgsConstructor
 public class HhBot extends TelegramLongPollingBot {
+    private final Logic logic;
+    @Value("${bot.token}")
+    private String botToken;
     UserSessionService userSessionService = new UserSessionService();
-
-    //    {"noExperience","between1And3","between3And6","moreThan6"}
     private final HashMap<String, String> experienceMap = new HashMap<>() {{
         put("Нет опыта", "noExperience");
         put("Опыт от 1 до 3 лет", "between1And3");
@@ -30,7 +38,7 @@ public class HhBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return "1587428127:AAHk3cxFtUV87O6SR9Fhrj0gn8LVNANcNZ0";
+        return botToken;
     }
 
     @Override
@@ -61,7 +69,7 @@ public class HhBot extends TelegramLongPollingBot {
                     e.printStackTrace();
                 }
             } else if (state == ConversationState.SET_AREA_NAME){
-                userSession.setCity(messageText);
+                userSession.setRegion(messageText);
                 userSession.setState(ConversationState.SET_PARAMETERS);
             } else if (messageText.equals("Название вакансии")){
                 userSession.setState(ConversationState.SET_VACATION_NAME);
@@ -76,7 +84,7 @@ public class HhBot extends TelegramLongPollingBot {
                     e.printStackTrace();
                 }
             } else if (state == ConversationState.SET_VACATION_NAME){
-                userSession.setVacation(messageText);
+                userSession.setTitle(messageText);
                 userSession.setState(ConversationState.SET_PARAMETERS);
             } else if (messageText.equals("Опыт")){
                 userSession.setState(ConversationState.SET_EXPERIENCE);
@@ -132,9 +140,13 @@ public class HhBot extends TelegramLongPollingBot {
 
             } else if (messageText.equals("Найти")){
                 userSession.setState(ConversationState.SHOW_VACATIONS);
+
+                List<Vacancy> vacancies = logic.getVacancyFilter(userSession);
+                int numVacancies = vacancies.size();
+                int allResponses = logic.getAllResponses(vacancies);
                 SendMessage message = SendMessage
                         .builder()
-                        .text("Вы ввели: " + userSession)
+                        .text("Вы ввели: " + userSession + " Найдено вакансий: " + numVacancies + " и всего откликов: " + allResponses)
                         .chatId(String.valueOf(chatId))
                         .build();
                 try {

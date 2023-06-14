@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.telegram.telegrambots.meta.generics.BotSession;
+import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 @Configuration
 public class AppConfig {
@@ -26,5 +28,10 @@ public class AppConfig {
     @Bean
     public ObjectMapper HhApiObjectMapper() {
         return new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    }
+
+    @Bean
+    public Class<DefaultBotSession> defaultBotSession(){
+        return DefaultBotSession.class;
     }
 }

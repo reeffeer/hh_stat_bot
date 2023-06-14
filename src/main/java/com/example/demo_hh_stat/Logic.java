@@ -1,9 +1,9 @@
 package com.example.demo_hh_stat;
 
 import com.example.demo_hh_stat.entity.Vacancy;
+import com.example.demo_hh_stat.telegramBot.UserSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +12,7 @@ import java.util.List;
 public class Logic {
     private final HhApi hhApi;
 
-    public List<Vacancy> getVacancyFilter(Filter filter){
+    public List<Vacancy> getVacancyFilter(UserSession filter){
         if(filter.getExperience() == null && filter.getSalary() == null)
             return hhApi.getVacanciesFilterNameRegion(filter.getTitle(),filter.getRegion());
         if(filter.getExperience() != null && filter.getSalary() == null)
@@ -24,10 +24,10 @@ public class Logic {
         return new ArrayList<>();
     }
 
-    public int getNumberOfVacancies(List<Vacancy> list) {
-        list = getVacancyFilter(Filter.builder().build());
-        return list.size();
-    }
+//    public int getNumberOfVacancies(List<Vacancy> list) {
+//        list = getVacancyFilter(Filter.builder().build());
+//        return list.size();
+//    }
 
     public int getAllResponses(List<Vacancy> list) {
         int totalResponses = 0;
