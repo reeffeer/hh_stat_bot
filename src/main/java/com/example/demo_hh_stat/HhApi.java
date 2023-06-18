@@ -20,14 +20,9 @@ public class HhApi {
     private final WebClient webClient;
 
     public List<Vacancy> getVacanciesFilterNameRegion(String nameVacancy, String nameRegion){
-        String uri = UriComponentsBuilder.fromPath("/vacancies")
-                .queryParam("text", nameVacancy)
-                .queryParam("area", getIdRegion(nameRegion))
-                .queryParam("responses_count_enabled", true)
-                .toUriString();
-
         WebClient.ResponseSpec responseSpec = webClient.get()
-                .uri(uri)
+                .uri("https://api.hh.ru/vacancies?" + "text=" + nameVacancy
+                        + "&area=" + getIdRegion(nameRegion) + "&responses_count_enabled=true")
                 .retrieve();
 
         return getVacancies(responseSpec);
@@ -35,7 +30,6 @@ public class HhApi {
 
     private List<Vacancy> getVacancies(WebClient.ResponseSpec responseSpec) {
         String body = responseSpec.bodyToMono(String.class).block();
-        System.out.println(body);
         try {
             ListVacancies listVacancies = objectMapper.readValue(body,ListVacancies.class);
             return listVacancies.getItems();
@@ -45,46 +39,35 @@ public class HhApi {
     }
 
     public List<Vacancy> getVacanciesFilterNameRegionExperience(String nameVacancy, String nameRegion, String idExperience){
-        String uri = UriComponentsBuilder.fromPath("/vacancies")
-                .queryParam("text", nameVacancy)
-                .queryParam("area", getIdRegion(nameRegion))
-                .queryParam("experience", idExperience)
-                .queryParam("responses_count_enabled", true)
-                .toUriString();
-
         WebClient.ResponseSpec responseSpecNre = webClient.get()
-                .uri(uri)
+                .uri("https://api.hh.ru/vacancies?" + "text=" + nameVacancy
+                        + "&area=" + getIdRegion(nameRegion) + "&experience=" + idExperience + "&responses_count_enabled=true")
                 .retrieve();
 
         return getVacancies(responseSpecNre);
     }
 
     public List<Vacancy> getVacanciesFilterNameRegionSalary(String nameVacancy, String nameRegion, String salary){
-        String uri = UriComponentsBuilder.fromPath("/vacancies")
-                .queryParam("text", nameVacancy)
-                .queryParam("area", getIdRegion(nameRegion))
-                .queryParam("salary", salary)
-                .queryParam("responses_count_enabled", true)
-                .toUriString();
-
         WebClient.ResponseSpec responseSpecNrs = webClient.get()
-                .uri(uri)
+                .uri("https://api.hh.ru/vacancies?" + "text=" + nameVacancy
+                        + "&area=" + getIdRegion(nameRegion) + "&salary=" + salary + "&responses_count_enabled=true")
                 .retrieve();
 
         return getVacancies(responseSpecNrs);
     }
 
     public List<Vacancy> getVacanciesFilterNameRegionExperienceSalary(String nameVacancy, String nameRegion, String idExperience, String salary){
-        String uri = UriComponentsBuilder.fromPath("/vacancies")
+        /*String uri = UriComponentsBuilder.fromPath("/vacancies")
                 .queryParam("text", nameVacancy)
                 .queryParam("area", getIdRegion(nameRegion))
                 .queryParam("experience", idExperience)
                 .queryParam("salary", salary)
                 .queryParam("responses_count_enabled", true)
-                .toUriString();
+                .toUriString();*/
 
         WebClient.ResponseSpec responseSpecNres = webClient.get()
-                .uri(uri)
+                .uri("https://api.hh.ru/vacancies?" + "text=" + nameVacancy
+                        + "&area=" + getIdRegion(nameRegion) + "&experience=" + idExperience + "&salary=" + salary + "&responses_count_enabled=true")
                 .retrieve();
 
         return getVacancies(responseSpecNres);
@@ -96,10 +79,8 @@ public class HhApi {
                 .uri("/areas/113")
                 .retrieve();
         String bodyArea = responseSpecArea.bodyToMono(String.class).block();
-        System.out.println(bodyArea);
         try {
             Country country = objectMapper.readValue(bodyArea, Country.class);
-            System.out.println(nameRegion);
 
             Optional<String> idAreasOptional = country.getAreas().stream()
                     .flatMap(area -> area.getAreas().stream())

@@ -4,10 +4,7 @@ package com.example.demo_hh_stat;
 import com.example.demo_hh_stat.entity.Vacancy;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
-import com.pengrad.telegrambot.model.File;
 import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.model.request.KeyboardButton;
-import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.response.SendResponse;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,21 +43,11 @@ public class Bot {
             String messageText = update.message().text();
 
             switch (currentState) {
-                case START:
-                    handleStartCommand(chatId);
-                    break;
-                case TITLE:
-                    handleTitleInput(chatId, messageText);
-                    break;
-                case CITY:
-                    handleCityInput(chatId, messageText);
-                    break;
-                case EXPERIENCE:
-                    handleExperienceInput(chatId, messageText);
-                    break;
-                case SALARY:
-                    handleSalaryInput(chatId, messageText);
-                    break;
+                case START -> handleStartCommand(chatId);
+                case TITLE -> handleTitleInput(chatId, messageText);
+                case CITY -> handleCityInput(chatId, messageText);
+                case EXPERIENCE -> handleExperienceInput(chatId, messageText);
+                case SALARY -> handleSalaryInput(chatId, messageText);
             }
         }
     }
