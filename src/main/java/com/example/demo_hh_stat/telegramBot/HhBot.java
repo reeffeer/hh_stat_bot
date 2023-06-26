@@ -58,31 +58,13 @@ public class HhBot extends TelegramLongPollingBot {
                 sendNestedKeyboard(chatId);
             } else if (messageText.equals("Город/область")){
                 userSession.setState(ConversationState.SET_AREA_NAME);
-                SendMessage message = SendMessage
-                        .builder()
-                        .text("Введите название города/области:")
-                        .chatId(String.valueOf(chatId))
-                        .build();
-                try {
-                    execute(message);
-                } catch (TelegramApiException e) {
-                    e.printStackTrace();
-                }
+                sendMessage(chatId, "Введите название города/области:");
             } else if (state == ConversationState.SET_AREA_NAME){
                 userSession.setRegion(messageText);
                 userSession.setState(ConversationState.SET_PARAMETERS);
             } else if (messageText.equals("Название вакансии")){
                 userSession.setState(ConversationState.SET_VACATION_NAME);
-                SendMessage message = SendMessage
-                        .builder()
-                        .text("Введите название вакансии:")
-                        .chatId(String.valueOf(chatId))
-                        .build();
-                try {
-                    execute(message);
-                } catch (TelegramApiException e) {
-                    e.printStackTrace();
-                }
+                sendMessage(chatId, "Введите название вакансии:");
             } else if (state == ConversationState.SET_VACATION_NAME){
                 userSession.setTitle(messageText);
                 userSession.setState(ConversationState.SET_PARAMETERS);
@@ -91,16 +73,7 @@ public class HhBot extends TelegramLongPollingBot {
                 sendExperienceKeyboard(chatId);
             } else if (messageText.equals("Зарплата")){
                 userSession.setState(ConversationState.SET_SALARY);
-                SendMessage message = SendMessage
-                        .builder()
-                        .text("Введите зарплату:")
-                        .chatId(String.valueOf(chatId))
-                        .build();
-                try {
-                    execute(message);
-                } catch (TelegramApiException e) {
-                    e.printStackTrace();
-                }
+                sendMessage(chatId, "Введите зарплату:");
             } else if (state == ConversationState.SET_EXPERIENCE){
                 String experienceId = experienceMap.get(messageText);
                 if (experienceId != null){
@@ -108,16 +81,7 @@ public class HhBot extends TelegramLongPollingBot {
                     userSession.setState(ConversationState.SET_PARAMETERS);
                     sendNestedKeyboard(chatId);
                 } else {
-                    SendMessage message = SendMessage
-                            .builder()
-                            .text("Такого опыта не найдено. Выберите из предлагаемых вариантов:")
-                            .chatId(String.valueOf(chatId))
-                            .build();
-                    try {
-                        execute(message);
-                    } catch (TelegramApiException e) {
-                        e.printStackTrace();
-                    }
+                    sendMessage(chatId, "Такого опыта не найдено. Выберите из предлагаемых вариантов:");
                     sendExperienceKeyboard(chatId);
                 }
             } else if (state == ConversationState.SET_SALARY){
@@ -126,35 +90,41 @@ public class HhBot extends TelegramLongPollingBot {
                     userSession.setState(ConversationState.SET_PARAMETERS);
                     sendNestedKeyboard(chatId);
                 } else {
-                    SendMessage message = SendMessage
-                            .builder()
-                            .text("Вы ввели некоректное число. Попробуйте снова: ")
-                            .chatId(String.valueOf(chatId))
-                            .build();
-                    try {
-                        execute(message);
-                    } catch (TelegramApiException e) {
-                        e.printStackTrace();
-                    }
+                    sendMessage(chatId, "Вы ввели некоректное число. Попробуйте снова: ");
                 }
 
-            } else if (messageText.equals("Найти")){
-                userSession.setState(ConversationState.SHOW_VACATIONS);
+            } else if (messageText.equals("Найти")) {
+                if (userSession.getTitle() == null && userSession.getRegion() != null) {
+                    sendMessage(chatId, "Вы не ввели название вакансии.");
+                }
+                else if (userSession.getTitle() != null && userSession.getRegion() == null) {
+                    sendMessage(chatId, "Вы не ввели название региона");
+                }
+                else if (userSession.getTitle() == null && userSession.getRegion() == null) {
+                    sendMessage(chatId, "Вы не ввели название региона и имя вакансии.");
+                }
+                else {
+                    userSession.setState(ConversationState.SHOW_VACATIONS);
 
-                List<Vacancy> vacancies = logic.getVacancyFilter(userSession);
-                int numVacancies = vacancies.size();
-                int allResponses = logic.getAllResponses(vacancies);
-                SendMessage message = SendMessage
-                        .builder()
-                        .text("Вы ввели: " + userSession + " Найдено вакансий: " + numVacancies + " и всего откликов: " + allResponses)
-                        .chatId(String.valueOf(chatId))
-                        .build();
-                try {
-                    execute(message);
-                } catch (TelegramApiException e) {
-                    e.printStackTrace();
+                    List<Vacancy> vacancies = logic.getVacancyFilter(userSession);
+                    int numVacancies = vacancies.size();
+                    int allResponses = logic.getAllResponses(vacancies);
+                    sendMessage(chatId, "Вы ввели: " + userSession + " Найдено вакансий: " + numVacancies + " и всего откликов: " + allResponses);
                 }
             }
+        }
+    }
+
+    private void sendMessage(long chatId, String mes) {
+        SendMessage message = SendMessage
+                .builder()
+                .text(mes)
+                .chatId(String.valueOf(chatId))
+                .build();
+        try {
+            execute(message);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
         }
     }
 
