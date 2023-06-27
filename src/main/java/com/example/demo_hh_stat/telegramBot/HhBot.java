@@ -110,7 +110,15 @@ public class HhBot extends TelegramLongPollingBot {
                     int numVacancies = vacancies.size();
                     int allResponses = logic.getAllResponses(vacancies);
                     sendMessage(chatId, "Вы ввели: " + userSession + " Найдено вакансий: " + numVacancies + " и всего откликов: " + allResponses);
+                    sendAfterFindKeyboard(chatId);
                 }
+            } else if (messageText.equals("Вывести вакансии")){
+                userSession.setState(ConversationState.SHOW_VACATIONS);
+                //show vacations
+                sendMessage(chatId, "Vacations: \n1)A\n2)B\n3)C");
+            } else if (messageText.equals("Назад к опциям")){
+                userSession.setState(ConversationState.CONVERSATION_STARTED);
+                sendInitialKeyboard(chatId);
             }
         }
     }
@@ -217,6 +225,34 @@ public class HhBot extends TelegramLongPollingBot {
 
         replyMarkup.setKeyboard(keyboard);
 
+        message.setReplyMarkup(replyMarkup);
+
+        try {
+            execute(message);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void sendAfterFindKeyboard(long chatId) {
+        SendMessage message = SendMessage
+                .builder()
+                .text("Что делать дальше?")//change text?
+                .chatId(String.valueOf(chatId))
+                .build();
+
+        ReplyKeyboardMarkup replyMarkup = new ReplyKeyboardMarkup();
+        replyMarkup.setSelective(true);
+        replyMarkup.setResizeKeyboard(true);
+        replyMarkup.setOneTimeKeyboard(false);
+
+        List<KeyboardRow> keyboard = new ArrayList<>();
+        KeyboardRow row1 = new KeyboardRow();
+        row1.add("Вывести вакансии");
+        row1.add("Назад к опциям");
+
+        keyboard.add(row1);
+        replyMarkup.setKeyboard(keyboard);
         message.setReplyMarkup(replyMarkup);
 
         try {
