@@ -21,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class HhBot extends TelegramLongPollingBot {
     private final Logic logic;
+    private List<Vacancy> vacancies = new ArrayList<>();
     @Value("${bot.token}")
     private String botToken;
     UserSessionService userSessionService = new UserSessionService();
@@ -106,7 +107,7 @@ public class HhBot extends TelegramLongPollingBot {
                 else {
                     userSession.setState(ConversationState.SHOW_VACATIONS);
 
-                    List<Vacancy> vacancies = logic.getVacancyFilter(userSession);
+                    vacancies = logic.getVacancyFilter(userSession);
                     int numVacancies = vacancies.size();
                     int allResponses = logic.getAllResponses(vacancies);
                     sendMessage(chatId, "Вы ввели: " + userSession + " Найдено вакансий: " + numVacancies + " и всего откликов: " + allResponses);
@@ -114,8 +115,14 @@ public class HhBot extends TelegramLongPollingBot {
                 }
             } else if (messageText.equals("Вывести вакансии")){
                 userSession.setState(ConversationState.SHOW_VACATIONS);
-                //show vacations
-                sendMessage(chatId, "Vacations: \n1)A\n2)B\n3)C");
+                 if (vacancies.size() != 0){
+                     vacancies.forEach(vacancy -> {
+                            sendMessage(chatId,"Вакансия: " + vacancy.getName() + "\nСсылка: http://hh.ru/vacancy/" + vacancy.getId());
+                        });
+                 }
+                 else {
+                        sendMessage(chatId, "Вакансий по указанным параметрам не найдено");
+                 }
             } else if (messageText.equals("Назад к опциям")){
                 userSession.setState(ConversationState.CONVERSATION_STARTED);
                 sendInitialKeyboard(chatId);
