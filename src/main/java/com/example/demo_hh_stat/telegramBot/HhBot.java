@@ -57,9 +57,9 @@ public class HhBot extends TelegramLongPollingBot {
             } else if (messageText.equals("Найти вакансии")) {
                 userSession.setState(ConversationState.SET_PARAMETERS);
                 sendNestedKeyboard(chatId);
-            } else if (messageText.equals("Город/область")){
+            } else if (messageText.equals("Город")){
                 userSession.setState(ConversationState.SET_AREA_NAME);
-                sendMessage(chatId, "Введите название города/области:");
+                sendMessage(chatId, "Введите название города:");
             } else if (state == ConversationState.SET_AREA_NAME){
                 userSession.setRegion(messageText);
                 userSession.setState(ConversationState.SET_PARAMETERS);
@@ -175,7 +175,7 @@ public class HhBot extends TelegramLongPollingBot {
     private void sendNestedKeyboard(long chatId) {
         SendMessage message = SendMessage
                 .builder()
-                .text("Виберите и введите параметры поиска:")
+                .text("Выберите и введите параметры поиска:")
                 .chatId(String.valueOf(chatId))
                 .build();
 
@@ -186,7 +186,7 @@ public class HhBot extends TelegramLongPollingBot {
 
         List<KeyboardRow> keyboard = new ArrayList<>();
         KeyboardRow row1 = new KeyboardRow();
-        row1.add("Город/область");
+        row1.add("Город");
         row1.add("Название вакансии");
         row1.add("Зарплата");
         KeyboardRow row2 = new KeyboardRow();
@@ -268,5 +268,4 @@ public class HhBot extends TelegramLongPollingBot {
             e.printStackTrace();
         }
     }
-
 }
